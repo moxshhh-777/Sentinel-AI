@@ -210,6 +210,22 @@ async def analyze_query(
     return report
 
 
+@app.get("/api/runs")
+def list_runs(db: Session = Depends(get_db), limit: int = 20):
+    runs = db.query(AnalysisRun).order_by(AnalysisRun.id.desc()).limit(limit).all()
+    return [
+        {
+            "id": run.id,
+            "query": run.query,
+            "status": run.status,
+            "started_at": run.started_at.isoformat() if run.started_at else None,
+            "correlation_id": run.correlation_id,
+            "action": run.recommendations[0].action if run.recommendations else "hold",
+            "confidence": run.recommendations[0].confidence if run.recommendations else 0.0
+        } for run in runs
+    ]
+
+
 @app.get("/api/runs/{run_id}")
 def get_run(run_id: int, db: Session = Depends(get_db)):
     run = db.query(AnalysisRun).filter(AnalysisRun.id == run_id).first()

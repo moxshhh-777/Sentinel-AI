@@ -149,3 +149,29 @@ def test_get_run_endpoint_not_found(client):
     response = client.get("/api/runs/9999999")
     assert response.status_code == 404
     assert "not found" in response.json()["detail"].lower()
+
+
+def test_list_runs_endpoint(client, db_session):
+    # Seed a fake run in db
+    run = AnalysisRun(
+        query="Analyze MSFT",
+        plan_json={"selected_agents": []},
+        status="completed",
+        started_at=datetime.now(timezone.utc),
+        completed_at=datetime.now(timezone.utc),
+        correlation_id="test-list-correlation-uuid"
+    )
+    db_session.add(run)
+    db_session.flush()
+
+    # Query list endpoint
+    response = client.get("/api/runs")
+    assert response.status_code == 200
+    
+    data = response.json()
+    assert len(data) >= 1
+    # Check that our seeded item is present (might be first because of desc sorting)
+    seeded_item = next((item for item in data if item["correlation_id"] == "test-list-correlation-uuid"), None)
+    assert seeded_item is not None
+    assert seeded_item["query"] == "Analyze MSFT"
+

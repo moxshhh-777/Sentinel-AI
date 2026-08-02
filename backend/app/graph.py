@@ -6,7 +6,14 @@ from langgraph.types import Send
 from langgraph.checkpoint.memory import MemorySaver
 
 from app.registry.planning import PlanningModule
-from app.agents import market_agent_node, news_agent_node, risk_agent_node
+from app.agents import (
+    market_agent_node,
+    news_agent_node,
+    risk_agent_node,
+    reasoning_node,
+    verifier_node,
+    recommendation_node,
+)
 
 # Set up graph structured logger
 logger = logging.getLogger("sentinel.graph")
@@ -32,6 +39,7 @@ class SentinelState(TypedDict):
     verification: Optional[dict]
     recommendation: Optional[dict]
     report: Optional[dict]
+    verification_attempts: int
 
 
 # 1. Supervisor / Planner Node
@@ -48,7 +56,8 @@ async def supervisor_node(state: SentinelState) -> Dict[str, Any]:
             "plan": {
                 "selected_agents": [],
                 "reasoning": "Query is empty or invalid."
-            }
+            },
+            "verification_attempts": 0
         }
         
     planner = PlanningModule()
@@ -80,7 +89,7 @@ async def supervisor_node(state: SentinelState) -> Dict[str, Any]:
             
     logger.info(f"[{correlation_id}] Supervisor node completed. Plan: selected_agents={plan['selected_agents']}, symbol={symbol}")
     logger.info(f"[{correlation_id}] Exiting node: supervisor")
-    return {"plan": plan, "symbol": symbol}
+    return {"plan": plan, "symbol": symbol, "verification_attempts": 0}
 
 
 # 2. Agent Wrapper Nodes (Convert AgentState to SentinelState output mapping)
@@ -172,14 +181,36 @@ def check_degraded_status(state: SentinelState):
             break
             
     if all_degraded:
-        logger.warning(f"[{correlation_id}] All selected agents falled back to degraded status. Routing to failure_node.")
+        logger.warning(f"[{correlation_id}] All selected agents fell back to degraded status. Routing to failure_node.")
         return "failure_node"
         
-    logger.info(f"[{correlation_id}] Valid data received from agents. Routing to reasoning_stub.")
-    return "reasoning_stub"
+    logger.info(f"[{correlation_id}] Valid data received from agents. Routing to reasoning node.")
+    return "reasoning"
 
 
-# 6. Failure & Stubs Nodes
+# 6. Verifier Loop Edge
+def route_after_verifier(state: SentinelState):
+    correlation_id = state.get("correlation_id", "unknown-id")
+    verification = state.get("verification") or {}
+    attempts = state.get("verification_attempts", 0)
+    
+    is_supported = verification.get("is_supported", True)
+    
+    if not is_supported and attempts <= 1:
+        logger.warning(
+            f"[{correlation_id}] Verifier: reasoning is not supported. "
+            f"Attempt {attempts}/1. Routing back to reasoning for retry."
+        )
+        return "reasoning"
+        
+    logger.info(
+        f"[{correlation_id}] Verifier: proceeding to recommendation. "
+        f"is_supported={is_supported}, attempts={attempts}"
+    )
+    return "recommendation"
+
+
+# 7. Failure & Stubs Nodes
 def failure_node(state: SentinelState) -> Dict[str, Any]:
     correlation_id = state.get("correlation_id", "unknown-id")
     logger.info(f"[{correlation_id}] Entering node: failure_node")
@@ -192,32 +223,11 @@ def failure_node(state: SentinelState) -> Dict[str, Any]:
     }
 
 
-def reasoning_stub(state: SentinelState) -> Dict[str, Any]:
-    correlation_id = state.get("correlation_id", "unknown-id")
-    logger.info(f"[{correlation_id}] Entering node: reasoning_stub")
-    logger.info(f"[{correlation_id}] Exiting node: reasoning_stub")
-    return {"reasoning": {"status": "skipped", "message": "Phase 6 stub"}}
-
-
-def verification_stub(state: SentinelState) -> Dict[str, Any]:
-    correlation_id = state.get("correlation_id", "unknown-id")
-    logger.info(f"[{correlation_id}] Entering node: verification_stub")
-    logger.info(f"[{correlation_id}] Exiting node: verification_stub")
-    return {"verification": {"status": "skipped", "message": "Phase 6 stub"}}
-
-
-def recommendation_stub(state: SentinelState) -> Dict[str, Any]:
-    correlation_id = state.get("correlation_id", "unknown-id")
-    logger.info(f"[{correlation_id}] Entering node: recommendation_stub")
-    logger.info(f"[{correlation_id}] Exiting node: recommendation_stub")
-    return {"recommendation": {"status": "skipped", "message": "Phase 6 stub"}}
-
-
 def report_stub(state: SentinelState) -> Dict[str, Any]:
     correlation_id = state.get("correlation_id", "unknown-id")
     logger.info(f"[{correlation_id}] Entering node: report_stub")
     logger.info(f"[{correlation_id}] Exiting node: report_stub")
-    return {"report": {"status": "success", "message": "Phase 6 stub completed"}}
+    return {"report": {"status": "success", "message": "Sentinel AI analysis completed successfully."}}
 
 
 # Build StateGraph
@@ -230,9 +240,9 @@ workflow.add_node("news_agent", news_agent_wrapper)
 workflow.add_node("risk_agent", risk_agent_wrapper)
 workflow.add_node("collect_results", collect_results_node)
 workflow.add_node("failure_node", failure_node)
-workflow.add_node("reasoning_stub", reasoning_stub)
-workflow.add_node("verification_stub", verification_stub)
-workflow.add_node("recommendation_stub", recommendation_stub)
+workflow.add_node("reasoning", reasoning_node)
+workflow.add_node("verifier", verifier_node)
+workflow.add_node("recommendation", recommendation_node)
 workflow.add_node("report_stub", report_stub)
 
 # Set Entrance
@@ -254,16 +264,24 @@ workflow.add_edge("risk_agent", "collect_results")
 workflow.add_conditional_edges(
     "collect_results",
     check_degraded_status,
-    ["failure_node", "reasoning_stub"]
+    ["failure_node", "reasoning"]
 )
 
-# Failure Node Exit
-workflow.add_edge("failure_node", END)
+# Reasoning Node connects to Verifier Node
+workflow.add_edge("reasoning", "verifier")
 
-# Happy Path Flow
-workflow.add_edge("reasoning_stub", "verification_stub")
-workflow.add_edge("verification_stub", "recommendation_stub")
-workflow.add_edge("recommendation_stub", "report_stub")
+# Verifier Node loop check conditional edge
+workflow.add_conditional_edges(
+    "verifier",
+    route_after_verifier,
+    ["reasoning", "recommendation"]
+)
+
+# Recommendation Node connects to Report
+workflow.add_edge("recommendation", "report_stub")
+
+# Exits
+workflow.add_edge("failure_node", END)
 workflow.add_edge("report_stub", END)
 
 # Compile with checkpoint memory saver

@@ -10,7 +10,9 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-logger = logging.getLogger("sentinel.llm")
+from app.logging_config import get_logger
+
+logger = get_logger("sentinel.llm")
 
 # Set up defaults
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")

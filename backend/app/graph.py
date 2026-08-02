@@ -15,8 +15,10 @@ from app.agents import (
     recommendation_node,
 )
 
+from app.logging_config import get_logger
+
 # Set up graph structured logger
-logger = logging.getLogger("sentinel.graph")
+logger = get_logger("sentinel.graph")
 
 def merge_outputs(left: dict, right: dict) -> dict:
     """

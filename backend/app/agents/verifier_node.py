@@ -4,7 +4,9 @@ from typing import Dict, Any
 from app.llm_client import GeminiClient
 from .schemas import VerificationResult
 
-logger = logging.getLogger("sentinel.nodes.verifier")
+from app.logging_config import get_logger
+
+logger = get_logger("sentinel.nodes.verifier")
 
 async def verifier_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """

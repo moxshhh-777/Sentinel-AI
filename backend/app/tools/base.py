@@ -6,7 +6,9 @@ from tenacity import retry, stop_after_attempt, wait_exponential
 from .exceptions import ToolUnavailableError
 from .circuit_breaker import CircuitBreaker
 
-logger = logging.getLogger("sentinel.tools")
+from app.logging_config import get_logger
+
+logger = get_logger("sentinel.tools")
 
 class BaseTool:
     def __init__(self, name: str, failure_threshold: int = 5, recovery_timeout: float = 60.0):

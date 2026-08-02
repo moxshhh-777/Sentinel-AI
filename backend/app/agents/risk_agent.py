@@ -10,7 +10,9 @@ from app.llm_client import GeminiClient
 from .schemas import RiskSummary
 from .state import AgentState
 
-logger = logging.getLogger("sentinel.agents.risk")
+from app.logging_config import get_logger
+
+logger = get_logger("sentinel.agents.risk")
 
 def calculate_historical_volatility(ohlc: List[Dict[str, Any]]) -> float:
     """

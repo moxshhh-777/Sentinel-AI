@@ -8,7 +8,9 @@ from app.llm_client import GeminiClient
 from .schemas import MarketSummary
 from .state import AgentState
 
-logger = logging.getLogger("sentinel.agents.market")
+from app.logging_config import get_logger
+
+logger = get_logger("sentinel.agents.market")
 
 def calculate_indicators(ohlc: List[Dict[str, Any]]) -> Dict[str, float]:
     """

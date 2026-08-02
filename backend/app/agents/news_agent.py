@@ -8,7 +8,9 @@ from app.llm_client import GeminiClient
 from .schemas import NewsSummary
 from .state import AgentState
 
-logger = logging.getLogger("sentinel.agents.news")
+from app.logging_config import get_logger
+
+logger = get_logger("sentinel.agents.news")
 
 async def news_agent_node(state: AgentState) -> Dict[str, Any]:
     """

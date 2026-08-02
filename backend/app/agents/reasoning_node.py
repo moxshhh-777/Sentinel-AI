@@ -4,7 +4,9 @@ from typing import Dict, Any
 from app.llm_client import GeminiClient
 from .schemas import ReasoningOutput
 
-logger = logging.getLogger("sentinel.nodes.reasoning")
+from app.logging_config import get_logger
+
+logger = get_logger("sentinel.nodes.reasoning")
 
 async def reasoning_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """

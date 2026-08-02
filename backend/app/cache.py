@@ -10,7 +10,9 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-logger = logging.getLogger("sentinel.cache")
+from app.logging_config import get_logger
+
+logger = get_logger("sentinel.cache")
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 

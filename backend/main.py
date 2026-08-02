@@ -20,9 +20,9 @@ from app.models import AnalysisRun, AgentOutput, Recommendation
 
 load_dotenv()
 
-# Set up logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("sentinel.api")
+from app.logging_config import setup_logging, get_logger, LangGraphTracingCallbackHandler
+setup_logging()
+logger = get_logger("sentinel.api")
 
 app = FastAPI(
     title="Sentinel AI API",
@@ -129,7 +129,10 @@ async def analyze_query(
         "correlation_id": correlation_id,
         "agent_outputs": {}
     }
-    config = {"configurable": {"thread_id": correlation_id}}
+    config = {
+        "configurable": {"thread_id": correlation_id},
+        "callbacks": [LangGraphTracingCallbackHandler(correlation_id=correlation_id)]
+    }
 
     try:
         final_state = await graph.ainvoke(initial_state, config=config)

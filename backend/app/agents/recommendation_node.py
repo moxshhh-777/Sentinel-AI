@@ -4,7 +4,9 @@ from typing import Dict, Any
 from app.llm_client import GeminiClient
 from .schemas import Recommendation
 
-logger = logging.getLogger("sentinel.nodes.recommendation")
+from app.logging_config import get_logger
+
+logger = get_logger("sentinel.nodes.recommendation")
 
 async def recommendation_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """

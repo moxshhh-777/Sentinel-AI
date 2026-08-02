@@ -60,6 +60,9 @@ class GeminiClient:
 
         # Define connection callable
         def _post():
+            import time
+            # Stagger successive calls to prevent rate limits
+            time.sleep(2.0)
             response = requests.post(url, json=payload, headers=headers, timeout=30)
             response.raise_for_status()
             return response.json()
@@ -77,8 +80,30 @@ class GeminiClient:
             if not text:
                 raise ValueError("Returned candidate content is empty.")
 
+            # Clean potential markdown wrappers or backticks from response text
+            cleaned_text = text.strip()
+            if cleaned_text.startswith("```json"):
+                cleaned_text = cleaned_text[7:]
+            elif cleaned_text.startswith("```"):
+                cleaned_text = cleaned_text[3:]
+            if cleaned_text.endswith("```"):
+                cleaned_text = cleaned_text[:-3]
+            cleaned_text = cleaned_text.strip("` \n\r\t")
+
+            # Balance braces to truncate any trailing extra braces or markdown junk
+            if cleaned_text.startswith("{"):
+                brace_count = 0
+                for i, char in enumerate(cleaned_text):
+                    if char == "{":
+                        brace_count += 1
+                    elif char == "}":
+                        brace_count -= 1
+                        if brace_count == 0:
+                            cleaned_text = cleaned_text[:i+1]
+                            break
+
             # Parse raw JSON string into target Pydantic schema
-            return schema.model_validate_json(text.strip())
+            return schema.model_validate_json(cleaned_text)
             
         except Exception as e:
             logger.error(f"Gemini LLM wrapper execution failed: {e}")

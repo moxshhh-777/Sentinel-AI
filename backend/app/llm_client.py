@@ -63,11 +63,32 @@ class GeminiClient:
         # Define connection callable
         def _post():
             import time
-            # Stagger successive calls to prevent rate limits
-            time.sleep(2.0)
-            response = requests.post(url, json=payload, headers=headers, timeout=30)
-            response.raise_for_status()
-            return response.json()
+            max_attempts = 4
+            backoff = 4.0
+            
+            for attempt in range(max_attempts):
+                # Stagger successive calls to prevent rate limits
+                time.sleep(2.0)
+                try:
+                    response = requests.post(url, json=payload, headers=headers, timeout=30)
+                    if response.status_code == 429:
+                        if attempt == max_attempts - 1:
+                            response.raise_for_status()
+                        logger.warning(
+                            f"Gemini API rate limited (429). Retrying in {backoff} seconds "
+                            f"(Attempt {attempt + 1}/{max_attempts})..."
+                        )
+                        time.sleep(backoff)
+                        backoff *= 2.0
+                        continue
+                    response.raise_for_status()
+                    return response.json()
+                except requests.exceptions.RequestException as e:
+                    if attempt == max_attempts - 1:
+                        raise e
+                    logger.warning(f"Gemini API request failed: {e}. Retrying in {backoff} seconds...")
+                    time.sleep(backoff)
+                    backoff *= 2.0
 
         # Run blocking requests call in default executor thread pool
         loop = asyncio.get_running_loop()

@@ -69,8 +69,8 @@ async def supervisor_node(state: SentinelState) -> Dict[str, Any]:
     except Exception as e:
         logger.error(f"[{correlation_id}] Planning module failed: {e}")
         plan = {
-            "selected_agents": [],
-            "reasoning": f"Planning failed: {str(e)}"
+            "selected_agents": ["market_agent", "news_agent", "risk_agent"],
+            "reasoning": f"Planning module failed due to transient API error ({str(e)}). Running all agents as a fail-safe fallback."
         }
 
     # Heuristic parsing of ticker symbol from query
@@ -97,26 +97,40 @@ async def supervisor_node(state: SentinelState) -> Dict[str, Any]:
 # 2. Agent Wrapper Nodes (Convert AgentState to SentinelState output mapping)
 async def market_agent_wrapper(state: SentinelState) -> Dict[str, Any]:
     correlation_id = state.get("correlation_id", "unknown-id")
+    plan = state.get("plan")
+    selected = plan.get("selected_agents", []) if plan else []
+    if "market_agent" not in selected:
+        logger.info(f"[{correlation_id}] MarketAgent not selected in plan. Skipping sequential node.")
+        return {}
+        
     logger.info(f"[{correlation_id}] Entering node: market_agent")
-    
     result = await market_agent_node(state)
-    
     logger.info(f"[{correlation_id}] Exiting node: market_agent")
     return {"agent_outputs": {"market_agent": result.get("market_summary")}}
 
 
 async def news_agent_wrapper(state: SentinelState) -> Dict[str, Any]:
     correlation_id = state.get("correlation_id", "unknown-id")
+    plan = state.get("plan")
+    selected = plan.get("selected_agents", []) if plan else []
+    if "news_agent" not in selected:
+        logger.info(f"[{correlation_id}] NewsAgent not selected in plan. Skipping sequential node.")
+        return {}
+        
     logger.info(f"[{correlation_id}] Entering node: news_agent")
-    
     result = await news_agent_node(state)
-    
     logger.info(f"[{correlation_id}] Exiting node: news_agent")
     return {"agent_outputs": {"news_agent": result.get("news_summary")}}
 
 
 async def risk_agent_wrapper(state: SentinelState) -> Dict[str, Any]:
     correlation_id = state.get("correlation_id", "unknown-id")
+    plan = state.get("plan")
+    selected = plan.get("selected_agents", []) if plan else []
+    if "risk_agent" not in selected:
+        logger.info(f"[{correlation_id}] RiskAgent not selected in plan. Skipping sequential node.")
+        return {}
+        
     logger.info(f"[{correlation_id}] Entering node: risk_agent")
     
     # Access news summary context from fanned-in/previous agent state outputs
@@ -133,7 +147,7 @@ async def risk_agent_wrapper(state: SentinelState) -> Dict[str, Any]:
     return {"agent_outputs": {"risk_agent": result.get("risk_summary")}}
 
 
-# 3. Router Edge (Parallel Send logic)
+# 3. Router Edge (Sequential Routing logic)
 def route_to_agents(state: SentinelState):
     correlation_id = state.get("correlation_id", "unknown-id")
     plan = state.get("plan")
@@ -143,17 +157,8 @@ def route_to_agents(state: SentinelState):
         logger.warning(f"[{correlation_id}] Router edge: No agents selected, routing to failure_node.")
         return "failure_node"
         
-    sends = []
-    for agent in selected:
-        if agent in ["market_agent", "news_agent", "risk_agent"]:
-            sends.append(Send(agent, state))
-            
-    if not sends:
-        logger.warning(f"[{correlation_id}] Router edge: Selected agents invalid or empty. Routing to failure_node.")
-        return "failure_node"
-        
-    logger.info(f"[{correlation_id}] Router edge: Fanning out in parallel to {len(sends)} agents: {selected}")
-    return sends
+    logger.info(f"[{correlation_id}] Router edge: Routing sequentially to market_agent.")
+    return "market_agent"
 
 
 # 4. Fan-in Collect Results Node
@@ -257,9 +262,9 @@ workflow.add_conditional_edges(
     ["market_agent", "news_agent", "risk_agent", "failure_node"]
 )
 
-# Wire parallel agents to convergence node
-workflow.add_edge("market_agent", "collect_results")
-workflow.add_edge("news_agent", "collect_results")
+# Wire agents sequentially to convergence node
+workflow.add_edge("market_agent", "news_agent")
+workflow.add_edge("news_agent", "risk_agent")
 workflow.add_edge("risk_agent", "collect_results")
 
 # Fan-in Conditional Edge

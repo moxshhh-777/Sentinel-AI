@@ -63,22 +63,26 @@ class GeminiClient:
         # Define connection callable
         def _post():
             import time
-            max_attempts = 4
-            backoff = 4.0
+            import random
+            max_attempts = 6
+            backoff = 8.0
             
             for attempt in range(max_attempts):
-                # Stagger successive calls to prevent rate limits
-                time.sleep(2.0)
+                # Add random jitter stagger to prevent parallel calls thundering herd rate limit
+                sleep_dur = 1.0 + random.uniform(0.5, 3.5)
+                time.sleep(sleep_dur)
                 try:
                     response = requests.post(url, json=payload, headers=headers, timeout=30)
                     if response.status_code == 429:
                         if attempt == max_attempts - 1:
                             response.raise_for_status()
+                        # Add jitter to backoff sleep as well
+                        retry_dur = backoff + random.uniform(0.5, 2.0)
                         logger.warning(
-                            f"Gemini API rate limited (429). Retrying in {backoff} seconds "
+                            f"Gemini API rate limited (429). Retrying in {retry_dur:.1f} seconds "
                             f"(Attempt {attempt + 1}/{max_attempts})..."
                         )
-                        time.sleep(backoff)
+                        time.sleep(retry_dur)
                         backoff *= 2.0
                         continue
                     response.raise_for_status()
@@ -86,8 +90,9 @@ class GeminiClient:
                 except requests.exceptions.RequestException as e:
                     if attempt == max_attempts - 1:
                         raise e
-                    logger.warning(f"Gemini API request failed: {e}. Retrying in {backoff} seconds...")
-                    time.sleep(backoff)
+                    retry_dur = backoff + random.uniform(0.5, 2.0)
+                    logger.warning(f"Gemini API request failed: {e}. Retrying in {retry_dur:.1f} seconds...")
+                    time.sleep(retry_dur)
                     backoff *= 2.0
 
         # Run blocking requests call in default executor thread pool
@@ -113,20 +118,52 @@ class GeminiClient:
                 cleaned_text = cleaned_text[:-3]
             cleaned_text = cleaned_text.strip("` \n\r\t")
 
-            # Balance braces to truncate any trailing extra braces or markdown junk
-            if cleaned_text.startswith("{"):
-                brace_count = 0
-                for i, char in enumerate(cleaned_text):
-                    if char == "{":
-                        brace_count += 1
-                    elif char == "}":
-                        brace_count -= 1
-                        if brace_count == 0:
-                            cleaned_text = cleaned_text[:i+1]
-                            break
-
             # Parse raw JSON string into target Pydantic schema
-            return schema.model_validate_json(cleaned_text)
+            try:
+                return schema.model_validate_json(cleaned_text)
+            except Exception as primary_err:
+                logger.warning(f"Primary JSON validation failed: {primary_err}. Attempting self-healing JSON repair...")
+                
+                # Self-healing helper for truncated JSON
+                def repair_json(json_str: str) -> str:
+                    json_str = json_str.strip()
+                    if not json_str:
+                        return json_str
+                    open_brackets = []
+                    in_string = False
+                    escaped = False
+                    for char in json_str:
+                        if char == '"' and not escaped:
+                            in_string = not in_string
+                        elif char == '\\' and in_string:
+                            escaped = not escaped
+                            continue
+                        elif not in_string:
+                            if char in ("{", "["):
+                                open_brackets.append(char)
+                            elif char in ("}", "]"):
+                                if open_brackets:
+                                    open_brackets.pop()
+                        escaped = False
+                    if in_string:
+                        json_str += '"'
+                    if open_brackets:
+                        json_str = json_str.rstrip(", \n\r\t")
+                        close_str = ""
+                        for b in reversed(open_brackets):
+                            if b == "{":
+                                close_str += "}"
+                            elif b == "[":
+                                close_str += "]"
+                        json_str += close_str
+                    return json_str
+
+                try:
+                    repaired_text = repair_json(cleaned_text)
+                    return schema.model_validate_json(repaired_text)
+                except Exception as repair_err:
+                    logger.error(f"Structured output parsing failed even after repair. Raw LLM output:\n{text}")
+                    raise primary_err
             
         except Exception as e:
             logger.error(f"Gemini LLM wrapper execution failed: {e}")

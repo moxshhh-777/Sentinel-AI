@@ -149,6 +149,11 @@ async def risk_agent_wrapper(state: SentinelState) -> Dict[str, Any]:
 
 # 3. Router Edge (Sequential Routing logic)
 def route_to_agents(state: SentinelState):
+    """
+    StateGraph router edge that initiates sequential execution.
+    Fanning out in parallel causes concurrent Gemini LLM rate limits (429).
+    Routing sequentially staggers API requests naturally.
+    """
     correlation_id = state.get("correlation_id", "unknown-id")
     plan = state.get("plan")
     selected = plan.get("selected_agents", []) if plan else []

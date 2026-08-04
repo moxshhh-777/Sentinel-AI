@@ -437,8 +437,8 @@ export default function TerminalDashboard() {
               {/* Simulated Console Logs */}
               <div className="bg-black/30 p-3 border border-text-mut/10 rounded space-y-1 text-text-mut text-[11px]">
                 {systemLogs.map((log, idx) => (
-                  <div key={idx} className={log.includes("SUCCESS") || log.includes("OK") ? "text-bullish" : ""}>
-                    {log}
+                  <div key={idx} className={log && (log.includes("SUCCESS") || log.includes("OK")) ? "text-bullish" : ""}>
+                    {log || ""}
                   </div>
                 ))}
               </div>

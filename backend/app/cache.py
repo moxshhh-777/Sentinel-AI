@@ -62,7 +62,7 @@ async def delete(key: str) -> bool:
 def cached(ttl_seconds: int = 3600):
     """
     Decorator to cache the JSON-serialized return value of external API calls.
-    Generates a unique cache key based on the function name and its arguments.
+    Generates a unique cache key based on the function name and its arguments string representation.
     Supports both async and sync decorated functions.
 
     Args:

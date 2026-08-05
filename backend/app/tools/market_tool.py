@@ -12,6 +12,7 @@ class MarketTool(BaseTool):
     async def get_price(self, symbol: str) -> float:
         """
         Gets the current price for a symbol.
+        Leverages fast_info metadata lookup first, with standard history fallback.
         Caches for 60 seconds.
         """
         def _fetch():

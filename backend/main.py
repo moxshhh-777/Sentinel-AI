@@ -30,7 +30,7 @@ app = FastAPI(
     version="0.1.0"
 )
 
-# CORS middleware setup
+# CORS middleware setup - wildcard allowed for developer simplicity and cross-origin testing
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

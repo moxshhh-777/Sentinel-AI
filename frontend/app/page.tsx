@@ -289,7 +289,7 @@ export default function TerminalDashboard() {
     }
   };
 
-  // Render visual ASCII confidence meter
+  // Render visual ASCII confidence meter scaling float values [0.0, 1.0] to visual block elements
   const renderConfidenceMeter = (confidence: number, action: string) => {
     const totalSegments = 20;
     const filledSegments = Math.round(confidence * totalSegments);

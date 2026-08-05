@@ -12,6 +12,12 @@ async def reasoning_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """
     LangGraph node that gathers compiled agent summaries, prompts the LLM to
     synthesize signals, identify evidence, and catalog conflicts in a ReasoningOutput.
+
+    Args:
+        state (Dict[str, Any]): Active state dictionary containing 'agent_outputs' and 'symbol'.
+
+    Returns:
+        Dict[str, Any]: State update dictionary writing the 'reasoning' key.
     """
     correlation_id = state.get("correlation_id", "unknown-id")
     logger.info(f"[{correlation_id}] Reasoning node execution started.")

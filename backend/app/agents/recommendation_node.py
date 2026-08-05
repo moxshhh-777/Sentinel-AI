@@ -12,7 +12,7 @@ async def recommendation_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """
     LangGraph node that calculates baseline fanned-in confidence scores,
     applies the verifier's adjustment modifier, and calls the LLM client
-    to issue a final buy/sell/hold Recommendation report.
+    to issue a final buy/sell/hold Recommendation report. Final confidence score is clamped to the range [0.0, 1.0].
 
     Args:
         state (Dict[str, Any]): State graph dictionary containing agent outputs and verifier checks.

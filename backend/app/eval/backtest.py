@@ -33,8 +33,8 @@ DEFAULT_TEST_CASES = [
 
 class HistoricalMockContext:
     """
-    Context manager that overrides Tool classes to restrict all data requests
-    up to a historical cutoff date.
+    Context manager that overrides Tool classes (MarketTool, NewsTool, and FredTool)
+    to restrict all data requests up to a historical cutoff date.
     """
     def __init__(self, target_date_str: str, symbol: str):
         self.target_date_str = target_date_str

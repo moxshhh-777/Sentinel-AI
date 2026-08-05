@@ -13,8 +13,8 @@ class FredTool(BaseTool):
     @cached(ttl_seconds=86400)
     async def get_series(self, series_id: str) -> Dict[str, Any]:
         """
-        Retrieves historical economic series data from FRED.
-        Caches for 24 hours.
+        Retrieves historical economic series data from the FRED JSON observations API endpoint.
+        Caches for 24 hours (86400 seconds).
 
         Args:
             series_id (str): Economic indicator series ID (e.g. FEDFUNDS, UNRATE).

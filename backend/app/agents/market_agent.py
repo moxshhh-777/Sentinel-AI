@@ -15,6 +15,7 @@ logger = get_logger("sentinel.agents.market")
 def calculate_indicators(ohlc: List[Dict[str, Any]]) -> Dict[str, float]:
     """
     Computes SMA20, SMA50, and RSI14 from historical OHLC records.
+    Expects a list of dictionaries containing daily close prices.
     """
     closes = [day["close"] for day in ohlc]
     n = len(closes)

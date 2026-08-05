@@ -15,7 +15,7 @@ class CircuitBreaker:
     async def can_execute(self) -> bool:
         """
         Check if the circuit allows execution.
-        If state is OPEN and the recovery timeout has elapsed, transitions to HALF-OPEN.
+        If state is OPEN and the recovery timeout has elapsed, transitions to HALF-OPEN dynamically based on timestamps.
 
         Returns:
             bool: True if execution is allowed, False if the circuit blocks it.

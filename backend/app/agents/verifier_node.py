@@ -12,7 +12,7 @@ async def verifier_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """
     LangGraph node that acts as an adversarial Risk Officer.
     Challenges the analyst's synthesis for contradictions or lack of evidence,
-    returning a VerificationResult. Increments the validation attempts tracker.
+    returning a VerificationResult. Increments the validation attempts tracker to prevent infinite logical loops.
 
     Args:
         state (Dict[str, Any]): Active state dictionary containing 'reasoning' and 'verification_attempts'.

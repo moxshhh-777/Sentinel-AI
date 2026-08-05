@@ -128,7 +128,7 @@ class GeminiClient:
                 def repair_json(json_str: str) -> str:
                     """
                     Analyzes and repairs truncated or malformed JSON payloads
-                    returned from the LLM by matching unclosed brackets and braces.
+                    returned from the LLM by matching unclosed brackets, braces, and open quotes.
                     """
                     json_str = json_str.strip()
                     if not json_str:

@@ -15,7 +15,7 @@ class NewsTool(BaseTool):
     async def get_headlines(self, query: str, limit: int = 10) -> Dict[str, Any]:
         """
         Retrieves top headlines for a query.
-        Caches for 15 minutes. Uses NewsAPI first; falls back to GNews on rate-limit or error.
+        Caches for 15 minutes (900 seconds). Uses NewsAPI first; falls back to GNews on rate-limit or error.
 
         Args:
             query (str): Asset search query parameter (e.g. GC=F, gold news).

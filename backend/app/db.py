@@ -32,6 +32,10 @@ class Base(DeclarativeBase):
 
 # FastAPI dependency function to yield a database session
 def get_db():
+    """
+    SQLAlchemy session context generator dependency.
+    Yields an active database session and ensures connection cleanup on exit.
+    """
     db = SessionLocal()
     try:
         yield db

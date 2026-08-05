@@ -1,6 +1,7 @@
 # Agent registry compiling all registered analysis workers.
 # This maps agent names to their capabilities and execution nodes,
 # allowing the supervisor planning module to dynamically discover and select them.
+# Note: registry keys must match the execution node wrapper names exactly for discovery.
 from app.agents import market_agent_node, news_agent_node, risk_agent_node
 
 AGENT_REGISTRY = {

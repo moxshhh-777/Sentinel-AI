@@ -15,6 +15,12 @@ class FredTool(BaseTool):
         """
         Retrieves historical economic series data from FRED.
         Caches for 24 hours.
+
+        Args:
+            series_id (str): Economic indicator series ID (e.g. FEDFUNDS, UNRATE).
+
+        Returns:
+            Dict[str, Any]: JSON observations list or error details.
         """
         def _fetch():
             if not self.api_key:

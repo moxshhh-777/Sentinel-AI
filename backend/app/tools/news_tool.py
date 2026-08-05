@@ -16,6 +16,13 @@ class NewsTool(BaseTool):
         """
         Retrieves top headlines for a query.
         Caches for 15 minutes. Uses NewsAPI first; falls back to GNews on rate-limit or error.
+
+        Args:
+            query (str): Asset search query parameter (e.g. GC=F, gold news).
+            limit (int): Maximum number of headlines to retrieve (default 10).
+
+        Returns:
+            Dict[str, Any]: Dict containing source info and list of formatted articles.
         """
         def _fetch():
             # 1. Attempt NewsAPI first

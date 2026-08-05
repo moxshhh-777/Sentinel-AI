@@ -17,7 +17,7 @@ class PlanningModule:
     async def create_plan(self, user_query: str) -> ExecutionPlan:
         """
         Formulates a selection prompt based on available agents in AGENT_REGISTRY,
-        invokes the LLM to generate a structured execution plan, and returns it.
+        invokes the LLM to generate a structured execution plan, validates it using Pydantic, and returns it.
 
         Args:
             user_query (str): The raw trading analytics request query.

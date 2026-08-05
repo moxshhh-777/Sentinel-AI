@@ -17,7 +17,7 @@ logger = get_logger("sentinel.agents.risk")
 def calculate_historical_volatility(ohlc: List[Dict[str, Any]]) -> float:
     """
     Calculates the annualized historical volatility (standard deviation of daily log returns)
-    over the last 30 trading days.
+    over the last 30 trading days. Uses sample standard deviation with Bessel's correction.
     """
     closes = [day["close"] for day in ohlc]
     if len(closes) < 2:

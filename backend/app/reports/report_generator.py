@@ -11,7 +11,7 @@ class ReportGenerator:
     def to_json(state: Dict[str, Any]) -> Dict[str, Any]:
         """
         Generate a structured JSON dictionary including plan reasoning,
-        agent summaries, verification notes, and final recommendations.
+        agent summaries, verification notes, and final recommendations for API responses.
         """
         plan = state.get("plan") or {}
         agent_outputs = state.get("agent_outputs") or {}

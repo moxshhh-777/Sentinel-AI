@@ -1,6 +1,6 @@
 # Sentinel AI
 
-Sentinel AI is an agentic financial decision-intelligence platform designed to automate financial analysis, news monitoring, and investment decision-making. By leveraging advanced language models and agentic workflows, the platform processes real-time market data, sentiment signals, and macroeconomic indicators. It features a modular Python FastAPI backend and a responsive, modern Next.js frontend.
+Sentinel AI is an agentic financial decision-intelligence platform designed to automate financial analysis, news monitoring, and investment decision-making. By leveraging advanced language models and agentic workflows, the platform processes real-time market data, sentiment signals, and macroeconomic indicators. It features a modular Python FastAPI backend powered by LangGraph orchestration and a responsive, modern Next.js frontend.
 
 ## Getting Started
 

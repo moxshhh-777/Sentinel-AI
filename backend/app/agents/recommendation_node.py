@@ -10,8 +10,15 @@ logger = get_logger("sentinel.nodes.recommendation")
 
 async def recommendation_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """
-    LangGraph node that computes adjusted confidence scores from the verifier's inputs,
-    and calls the LLM to yield a structured buy/sell/hold Recommendation.
+    LangGraph node that calculates baseline fanned-in confidence scores,
+    applies the verifier's adjustment modifier, and calls the LLM client
+    to issue a final buy/sell/hold Recommendation report.
+
+    Args:
+        state (Dict[str, Any]): State graph dictionary containing agent outputs and verifier checks.
+
+    Returns:
+        Dict[str, Any]: State update dictionary writing the 'recommendation' key.
     """
     correlation_id = state.get("correlation_id", "unknown-id")
     logger.info(f"[{correlation_id}] Recommendation node execution started.")

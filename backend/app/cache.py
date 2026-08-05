@@ -64,6 +64,9 @@ def cached(ttl_seconds: int = 3600):
     Decorator to cache the JSON-serialized return value of external API calls.
     Generates a unique cache key based on the function name and its arguments.
     Supports both async and sync decorated functions.
+
+    Args:
+        ttl_seconds (int): Cache time-to-live expiration delay in seconds (default 1 hour).
     """
     def decorator(func: Callable[..., Any]):
         @functools.wraps(func)

@@ -18,6 +18,12 @@ class PlanningModule:
         """
         Formulates a selection prompt based on available agents in AGENT_REGISTRY,
         invokes the LLM to generate a structured execution plan, and returns it.
+
+        Args:
+            user_query (str): The raw trading analytics request query.
+
+        Returns:
+            ExecutionPlan: Structured schema containing the selected agents list and rationale.
         """
         # Formulate available agents string for the prompt
         agents_info = ""

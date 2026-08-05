@@ -14,7 +14,7 @@ logger = get_logger("sentinel.agents.news")
 
 async def news_agent_node(state: AgentState) -> Dict[str, Any]:
     """
-    LangGraph agent node that queries news headlines for a symbol,
+    LangGraph agent node that queries news headlines for a symbol using NewsAPI or GNews,
     and calls the LLM client to return a concise structured NewsSummary.
     """
     symbol = state.get("symbol")

@@ -13,6 +13,12 @@ async def verifier_node(state: Dict[str, Any]) -> Dict[str, Any]:
     LangGraph node that acts as an adversarial Risk Officer.
     Challenges the analyst's synthesis for contradictions or lack of evidence,
     returning a VerificationResult. Increments the validation attempts tracker.
+
+    Args:
+        state (Dict[str, Any]): Active state dictionary containing 'reasoning' and 'verification_attempts'.
+
+    Returns:
+        Dict[str, Any]: State update dictionary writing the 'verification' and 'verification_attempts' keys.
     """
     correlation_id = state.get("correlation_id", "unknown-id")
     logger.info(f"[{correlation_id}] Verifier node execution started.")

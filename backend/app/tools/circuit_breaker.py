@@ -16,6 +16,9 @@ class CircuitBreaker:
         """
         Check if the circuit allows execution.
         If state is OPEN and the recovery timeout has elapsed, transitions to HALF-OPEN.
+
+        Returns:
+            bool: True if execution is allowed, False if the circuit blocks it.
         """
         async with self._lock:
             now = time.time()

@@ -17,6 +17,7 @@ class BaseTool:
     async def _execute(self, func: Callable[..., Any], *args: Any, **kwargs: Any) -> Any:
         """
         Executes a callable wrapping it in both a Circuit Breaker check and Tenacity retries.
+        Handles both synchronous and asynchronous callables seamlessly.
         Raises ToolUnavailableError if the circuit is OPEN or if all 3 retry attempts fail.
         """
         # 1. Circuit Breaker check

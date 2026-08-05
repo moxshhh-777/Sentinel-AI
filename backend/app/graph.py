@@ -152,7 +152,7 @@ def route_to_agents(state: SentinelState):
     """
     StateGraph router edge that initiates sequential execution.
     Fanning out in parallel causes concurrent Gemini LLM rate limits (429).
-    Routing sequentially staggers API requests naturally.
+    Routing sequentially staggers API requests naturally, preserving API quota.
     """
     correlation_id = state.get("correlation_id", "unknown-id")
     plan = state.get("plan")

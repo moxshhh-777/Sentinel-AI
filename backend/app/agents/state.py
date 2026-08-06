@@ -3,7 +3,7 @@ from typing import TypedDict, Optional, Dict, Any
 class AgentState(TypedDict):
     """
     Structured dictionary schema modeling the state variables fanned down
-    to individual research agent execution nodes.
+    to individual research agent execution nodes. Acts as a local context subset of SentinelState.
     """
     symbol: str
     correlation_id: str

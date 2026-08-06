@@ -12,6 +12,7 @@ class JSONFormatter(logging.Formatter):
     """
     Custom Formatter that prints logs in a structured JSON format.
     Ensures every log line contains timestamp, level, correlation_id, and node_name.
+    Extracts additional custom attributes from record.__dict__ dynamically.
     """
     def format(self, record: logging.LogRecord) -> str:
         cid = getattr(record, "correlation_id", None) or correlation_id_var.get()

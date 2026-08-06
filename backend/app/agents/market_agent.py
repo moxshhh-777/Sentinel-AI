@@ -82,7 +82,7 @@ async def market_agent_node(state: AgentState) -> Dict[str, Any]:
         current_price = await market_tool.get_price(symbol)
         volume = await market_tool.get_volume(symbol)
 
-        # Compute indicators
+        # Compute technical indicators
         indicators = calculate_indicators(ohlc_data)
 
         # Formulate LLM prompt

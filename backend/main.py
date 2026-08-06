@@ -39,13 +39,13 @@ app.add_middleware(
     allow_methods=["*"],
 )
 
-# Correlation ID Middleware
+# Correlation ID Middleware for request logging and client tracking
 @app.middleware("http")
 async def add_correlation_id(request: Request, call_next):
     correlation_id = str(uuid.uuid4())
     request.state.correlation_id = correlation_id
     response = await call_next(request)
-    response.headers["X-Correlation-ID"] = correlation_id
+    response.headers["X-Correlation-ID"] = correlation_id  # exposes tracking header to clients
     return response
 
 # Global Exception Handler

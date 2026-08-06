@@ -43,7 +43,7 @@ def calculate_historical_volatility(ohlc: List[Dict[str, Any]]) -> float:
     variance = sum((r - mean) ** 2 for r in returns) / (n - 1) if n > 1 else 0.0
     std_dev = math.sqrt(variance)
 
-    # Annualize (assuming 252 trading days/year)
+    # Annualize (assuming 252 trading days/year representing active trading periods)
     return std_dev * math.sqrt(252)
 
 

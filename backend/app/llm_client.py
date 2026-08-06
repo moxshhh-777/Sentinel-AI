@@ -54,7 +54,7 @@ class GeminiClient:
             ],
             "generationConfig": {
                 "responseMimeType": "application/json",
-                "temperature": 0.1  # Highly deterministic
+                "temperature": 0.1  # Highly deterministic to ensure strict schema compliance
             }
         }
 

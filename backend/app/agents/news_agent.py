@@ -34,6 +34,7 @@ async def news_agent_node(state: AgentState) -> Dict[str, Any]:
 
         headline_count = len(articles)
 
+        # Handle empty headline counts gracefully with a custom prompt fallback
         if headline_count == 0:
             prompt = (
                 f"Asset: {symbol}\n"

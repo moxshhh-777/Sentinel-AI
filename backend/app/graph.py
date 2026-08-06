@@ -168,6 +168,10 @@ def route_to_agents(state: SentinelState):
 
 # 4. Fan-in Collect Results Node
 def collect_results_node(state: SentinelState) -> Dict[str, Any]:
+    """
+    Acts as a state synchronization checkpoint for fanned-in sequential research nodes
+    before routing evaluation states to downstream reasoning modules.
+    """
     correlation_id = state.get("correlation_id", "unknown-id")
     logger.info(f"[{correlation_id}] Entering node: collect_results")
     logger.info(f"[{correlation_id}] Aggregated agent outputs: {list(state.get('agent_outputs', {}).keys())}")

@@ -14,7 +14,7 @@ if not DATABASE_URL:
 # Create the SQLAlchemy engine with pool configurations suitable for production
 engine = create_engine(
     DATABASE_URL,
-    pool_pre_ping=True,  # Detects and recycles disconnected connections
+    pool_pre_ping=True,  # Detects and recycles disconnected connections by running test queries
     pool_size=10,
     max_overflow=20
 )

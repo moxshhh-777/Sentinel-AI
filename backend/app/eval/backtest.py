@@ -214,7 +214,7 @@ async def run_case(query: str, symbol: str, date_str: str, n_days: int) -> Dict[
     p_start, p_end, return_val = calculate_price_performance(symbol, date_str, n_days)
     
     # Directional Accuracy Assessment
-    # Hit rates are evaluated with a 1.0% directional threshold
+    # Hit rates are evaluated with a 1.0% directional threshold to ignore small noise fluctuations
     outcome = "Neutral"
     if return_val > 0.01:
         outcome = "Correct" if action.lower() == "buy" else "Incorrect" if action.lower() == "sell" else "Neutral"

@@ -19,7 +19,7 @@ engine = create_engine(
     max_overflow=20
 )
 
-# Create SessionLocal class for database sessions
+# Create SessionLocal class for database sessions - instances represent distinct database transactions
 SessionLocal = sessionmaker(
     autocommit=False,
     autoflush=False,

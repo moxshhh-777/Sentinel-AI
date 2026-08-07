@@ -181,6 +181,10 @@ def collect_results_node(state: SentinelState) -> Dict[str, Any]:
 
 # 5. Degraded Conditional Edge
 def check_degraded_status(state: SentinelState):
+    """
+    Evaluates whether all active research agents fell back to degraded states.
+    If all failed, routes to failure_node; otherwise routes to reasoning.
+    """
     correlation_id = state.get("correlation_id", "unknown-id")
     plan = state.get("plan")
     selected = plan.get("selected_agents", []) if plan else []

@@ -36,7 +36,7 @@ class GeminiClient:
 
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model}:generateContent?key={self.api_key}"
 
-        # Inject JSON schema instructions directly into the system prompt
+        # Inject JSON schema instructions directly into the system prompt by converting Pydantic models to standard JSON schema representation
         schema_json = json.dumps(schema.model_json_schema())
         system_instruction = (
             f"You are a precise financial decision-intelligence assistant. "

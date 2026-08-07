@@ -52,7 +52,7 @@ class ReportGenerator:
     @staticmethod
     def to_markdown(state: Dict[str, Any]) -> str:
         """
-        Generate a premium Markdown report compiling the entire analysis session.
+        Generate a premium Markdown report compiling the entire analysis session into a single markdown string.
         """
         data = ReportGenerator.to_json(state)
         

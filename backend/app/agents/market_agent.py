@@ -33,7 +33,7 @@ def calculate_indicators(ohlc: List[Dict[str, Any]]) -> Dict[str, float]:
         sma20 = sum(closes[-20:]) / 20.0
 
     # 3. RSI14 (Relative Strength Index)
-    rsi14 = 50.0  # Default neutral midpoint
+    rsi14 = 50.0  # Default neutral midpoint (used when there are insufficient records to compute returns)
     if n >= 15:
         deltas = [closes[i] - closes[i - 1] for i in range(1, n)]
         gains = [d if d > 0 else 0.0 for d in deltas]

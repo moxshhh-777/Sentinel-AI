@@ -87,7 +87,7 @@ async def risk_agent_node(state: AgentState) -> Dict[str, Any]:
         degraded = True
         confidence_penalty += 0.5
 
-    # 2. Fetch CBOE VIX Index
+    # 2. Fetch CBOE VIX Index (using VIXCLS series ID on FRED API)
     try:
         vix_payload = await fred_tool.get_series("VIXCLS")
         observations = vix_payload.get("observations", [])

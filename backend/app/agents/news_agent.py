@@ -27,7 +27,7 @@ async def news_agent_node(state: AgentState) -> Dict[str, Any]:
     llm_client = GeminiClient()
 
     try:
-        # Fetch headlines targeting the asset symbol
+        # Fetch headlines targeting the asset symbol - limiting to 10 articles to balance Gemini context size
         news_payload = await news_tool.get_headlines(symbol, limit=10)
         articles = news_payload.get("articles", [])
         source = news_payload.get("source", "unknown")

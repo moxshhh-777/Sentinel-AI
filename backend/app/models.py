@@ -59,7 +59,7 @@ class AnalysisRun(Base):
     completed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
     correlation_id: Mapped[Optional[str]] = mapped_column(String(255), nullable=True, index=True)
     
-    # pgvector embedding column mapping 1536-dimensional vectors
+    # pgvector embedding column mapping 1536-dimensional vectors (compatible with models like text-embedding-ada-002)
     embedding: Mapped[Optional[List[float]]] = mapped_column(Vector(1536), nullable=True)
 
     # Relationships

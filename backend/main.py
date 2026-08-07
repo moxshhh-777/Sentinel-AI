@@ -42,7 +42,7 @@ app.add_middleware(
 # Correlation ID Middleware for request logging and client tracking
 @app.middleware("http")
 async def add_correlation_id(request: Request, call_next):
-    correlation_id = str(uuid.uuid4())
+    correlation_id = str(uuid.uuid4())  # random 128-bit UUID4 generation
     request.state.correlation_id = correlation_id
     response = await call_next(request)
     response.headers["X-Correlation-ID"] = correlation_id  # exposes tracking header to clients

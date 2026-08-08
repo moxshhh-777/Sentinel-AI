@@ -8,6 +8,7 @@ from .base import BaseTool
 class NewsTool(BaseTool):
     def __init__(self):
         super().__init__(name="NewsTool")
+        # Load optional API credentials from system environment variables
         self.newsapi_key = os.getenv("NEWSAPI_KEY")
         self.gnews_api_key = os.getenv("GNEWS_API_KEY")
 

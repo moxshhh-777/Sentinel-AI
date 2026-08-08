@@ -5,7 +5,7 @@ class MarketSummary(BaseModel):
     trend: str = Field(..., description="Overall price trend direction (e.g. Bullish, Bearish, Sideways)")
     volatility_note: str = Field(..., description="Brief commentary on recent price volatility")
     key_levels: List[float] = Field(..., description="Support and resistance levels identified from historical price data")
-    degraded: bool = Field(default=False, description="Flag indicating if the summary was compiled using degraded fallback state")
+    degraded: bool = Field(default=False, description="Flag indicating if the summary was compiled using degraded fallback state due to tool timeouts or errors")
     confidence: float = Field(..., description="Confidence score of the analysis (0.0 to 1.0)")
 
 class NewsSummary(BaseModel):

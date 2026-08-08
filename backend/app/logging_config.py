@@ -47,7 +47,7 @@ class JSONFormatter(logging.Formatter):
 
 def setup_logging():
     """
-    Configures the root logging stream handler to output structured JSON formatted logs.
+    Configures the root logging stream handler to output structured JSON formatted logs, overriding defaults.
     """
     root_logger = logging.getLogger()
     for handler in root_logger.handlers[:]:

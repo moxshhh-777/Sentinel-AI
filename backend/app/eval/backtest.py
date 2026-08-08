@@ -152,7 +152,7 @@ class HistoricalMockContext:
 def calculate_price_performance(symbol: str, target_date_str: str, n_days: int) -> Tuple[float, float, float]:
     """
     Retrieves actual price performance of symbol over the N trading days following target_date_str.
-    Returns (start_price, end_price, percentage_change).
+    Returns a tuple containing (start_price, end_price, percentage_change represented as a float fractional multiplier).
     """
     dt = datetime.strptime(target_date_str, "%Y-%m-%d")
     start_str = target_date_str

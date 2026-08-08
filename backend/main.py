@@ -212,6 +212,7 @@ async def analyze_query(
 
 @app.get("/api/runs")
 def list_runs(db: Session = Depends(get_db), limit: int = 20):
+    # Fetch analysis runs ordered descending by ID, bounded by the limit parameter (default 20)
     runs = db.query(AnalysisRun).order_by(AnalysisRun.id.desc()).limit(limit).all()
     return [
         {

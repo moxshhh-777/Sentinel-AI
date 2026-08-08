@@ -22,6 +22,7 @@ T = TypeVar("T", bound=BaseModel)
 
 class GeminiClient:
     def __init__(self, api_key: str = None, model: str = None):
+        # Initialize Gemini API key and model properties, defaulting to loaded environment parameters
         self.api_key = api_key or GEMINI_API_KEY
         self.model = model or GEMINI_MODEL
 

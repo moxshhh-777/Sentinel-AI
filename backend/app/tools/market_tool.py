@@ -66,6 +66,7 @@ class MarketTool(BaseTool):
     async def get_volume(self, symbol: str) -> int:
         """
         Gets the current volume for a symbol.
+        Leverages fast_info metadata lookup first, with standard history fallback.
         Caches for 60 seconds.
         """
         def _fetch():

@@ -75,7 +75,7 @@ async def supervisor_node(state: SentinelState) -> Dict[str, Any]:
 
     # Heuristic parsing of ticker symbol from query
     words = [w.strip("?,.!") for w in query.split()]
-    symbol = "AAPL"  # default fallback
+    symbol = "AAPL"  # default fallback asset represents Apple Inc when heuristic parsing fails
     for w in words:
         if w.isupper() and len(w) >= 2 and len(w) <= 5:
             symbol = w

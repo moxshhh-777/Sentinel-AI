@@ -4,6 +4,7 @@
 # Note: registry keys must match the execution node wrapper names exactly for discovery.
 from app.agents import market_agent_node, news_agent_node, risk_agent_node
 
+# AGENT_REGISTRY mappings bind supervisor orchestrator keys to target graph wrapper nodes
 AGENT_REGISTRY = {
     "market_agent": {
         "node": market_agent_node,

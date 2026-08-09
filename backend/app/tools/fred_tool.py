@@ -8,6 +8,7 @@ from .base import BaseTool
 class FredTool(BaseTool):
     def __init__(self):
         super().__init__(name="FredTool")
+        # Load FRED database API key from system environment variables
         self.api_key = os.getenv("FRED_API_KEY")
 
     @cached(ttl_seconds=86400)

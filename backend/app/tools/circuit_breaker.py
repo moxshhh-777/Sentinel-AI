@@ -49,7 +49,7 @@ class CircuitBreaker:
         async with self._lock:
             now = time.time()
             self.failures.append(now)
-            # Retain only failures that occurred within the last 60 seconds
+            # Retain only failures that occurred within the last 60 seconds (enforces a sliding window filter)
             self.failures = [t for t in self.failures if now - t <= 60.0]
             
             if len(self.failures) >= self.failure_threshold:

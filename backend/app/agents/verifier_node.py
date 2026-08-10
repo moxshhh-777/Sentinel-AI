@@ -52,7 +52,7 @@ async def verifier_node(state: Dict[str, Any]) -> Dict[str, Any]:
     except Exception as e:
         logger.error(f"[{correlation_id}] Verifier node execution failed: {e}")
         fallback = VerificationResult(
-            is_supported=True,  # Fail-safe to avoid infinite loop locks
+            is_supported=True,  # Fail-safe to avoid infinite loop locks, allowing pipeline to progress to final recommendation
             confidence_adjustment=-0.2,
             notes=f"Verifier execution crashed: {str(e)}"
         )

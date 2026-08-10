@@ -69,7 +69,7 @@ async def recommendation_node(state: Dict[str, Any]) -> Dict[str, Any]:
         # rec = await client.generate_structured_output(prompt, CryptoRecommendation)
         rec: Recommendation = await client.generate_structured_output(prompt, Recommendation)
         
-        # Override to ensure exact confidence score computation matches our math
+        # Override to ensure exact confidence score computation matches our math and verifier adjustments
         rec.confidence = final_confidence
 
         logger.info(f"[{correlation_id}] Recommendation node completed. Action={rec.action}, Confidence={rec.confidence:.2f}")

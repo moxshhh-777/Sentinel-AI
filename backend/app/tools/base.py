@@ -26,7 +26,7 @@ class BaseTool:
             raise ToolUnavailableError(f"Circuit breaker '{self.circuit_breaker.name}' is OPEN")
 
         # 2. Define Tenacity retry handler wrapping the function
-        # Max 3 attempts, exponential backoff (multiplier=1 -> attempts at ~1s, ~2s)
+        # Max 3 attempts, exponential backoff (multiplier=1 -> attempts at ~1s, ~2s) to staggering consecutive requests on errors
         @retry(
             stop=stop_after_attempt(3),
             wait=wait_exponential(multiplier=1, min=1, max=4),

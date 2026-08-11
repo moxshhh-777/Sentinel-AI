@@ -4,4 +4,5 @@ class ToolUnavailableError(Exception):
     either because the circuit breaker is open or all retries are exhausted.
     Triggers graceful degradation in dependent agent nodes.
     """
+    # Standard custom exception helper class for classification of tool errors
     pass

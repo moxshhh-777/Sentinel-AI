@@ -21,6 +21,7 @@ try:
     redis_client = Redis.from_url(REDIS_URL, decode_responses=True)
 except Exception as e:
     logger.error(f"Failed to initialize Redis client at {REDIS_URL}: {e}")
+    # Set client to None, which gracefully disables redis operations without halting the system
     redis_client = None
 
 

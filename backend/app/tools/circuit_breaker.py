@@ -33,7 +33,7 @@ class CircuitBreaker:
     async def record_success(self):
         """
         Record a successful call. 
-        Resets the failure counter and closes the circuit if it was OPEN or HALF-OPEN.
+        Resets the failure counter and closes the circuit (transitions state back to CLOSED) if it was OPEN or HALF-OPEN.
         """
         async with self._lock:
             self.failures.clear()

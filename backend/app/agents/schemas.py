@@ -11,7 +11,7 @@ class MarketSummary(BaseModel):
 class NewsSummary(BaseModel):
     headline_count: int = Field(..., description="Number of headlines scanned")
     key_events: List[str] = Field(..., description="Up to 5 key events or news points extracted from headlines")
-    overall_tone: str = Field(..., description="Overall emotional sentiment or tone of news (e.g., Optimistic, Panic, Neutral)")
+    overall_tone: str = Field(..., description="Overall emotional sentiment or tone of news (e.g., Optimistic, Panic, Neutral) determined from scanned headlines")
     degraded: bool = Field(default=False, description="Flag indicating if the summary was compiled using degraded fallback state")
     confidence: float = Field(..., description="Confidence score of the analysis (0.0 to 1.0)")
 

@@ -7,7 +7,7 @@ from app.tools.exceptions import ToolUnavailableError
 from app.llm_client import GeminiClient
 from .schemas import MarketSummary
 from .state import AgentState
-
+ 
 from app.logging_config import get_logger
 
 logger = get_logger("sentinel.agents.market")

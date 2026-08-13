@@ -14,7 +14,7 @@ async def reasoning_node(state: Dict[str, Any]) -> Dict[str, Any]:
     synthesize signals, identify evidence, and catalog conflicts in a ReasoningOutput.
 
     Args:
-        state (Dict[str, Any]): Active state dictionary containing 'agent_outputs' and 'symbol'.
+        state (Dict[str, Any]): Active state dictionary containing 'agent_outputs' and 'symbol'. 
 
     Returns:
         Dict[str, Any]: State update dictionary writing the 'reasoning' key.

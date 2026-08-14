@@ -46,7 +46,7 @@ async def add_correlation_id(request: Request, call_next):
     request.state.correlation_id = correlation_id
     response = await call_next(request)
     response.headers["X-Correlation-ID"] = correlation_id  # exposes tracking header to clients
-    return response
+    return response 
 
 # Global Exception Handler
 @app.exception_handler(Exception)

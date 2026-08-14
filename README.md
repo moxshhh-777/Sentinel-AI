@@ -14,7 +14,7 @@ To spin up the Postgres database (with `pgvector` support) and Redis cache:
 ```bash
 docker compose up -d
 ```
-
+  
 This starts:
 - **Postgres** on `localhost:5432` (database: `sentinel`, user: `sentinel`)
 - **Redis** on `localhost:6379`

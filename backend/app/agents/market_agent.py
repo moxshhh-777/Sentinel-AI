@@ -129,4 +129,4 @@ async def market_agent_node(state: AgentState) -> Dict[str, Any]:
             degraded=True,
             confidence=0.0
         )
-        return {"market_summary": degraded_summary.model_dump()}
+        return {"market_summary": degraded_summary.model_dump()} 

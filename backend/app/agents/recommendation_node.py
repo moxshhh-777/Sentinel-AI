@@ -58,7 +58,7 @@ async def recommendation_node(state: Dict[str, Any]) -> Dict[str, Any]:
         f"issue a final action (buy, sell, or hold) and list key risks. "
         f"Enforce the suggested confidence score of {final_confidence:.2f}."
     )
-
+ 
     client = GeminiClient()
     try:
         # Note: Recommendation is a bound version of the generic RecommendationSchema.

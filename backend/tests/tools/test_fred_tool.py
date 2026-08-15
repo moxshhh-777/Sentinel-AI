@@ -43,7 +43,7 @@ async def test_get_series_fail_after_retries():
         
         with pytest.raises(ToolUnavailableError):
             await tool.get_series("GDP")
-
+ 
 
 @pytest.mark.asyncio
 async def test_fred_tool_circuit_breaker_tripping():

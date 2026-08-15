@@ -30,7 +30,7 @@ async def test_news_agent_happy_path(mocker):
         overall_tone="Optimistic",
         degraded=False,
         confidence=0.9
-    )
+    ) 
     mock_llm = mocker.patch("app.llm_client.GeminiClient.generate_structured_output", new_callable=AsyncMock, return_value=mock_summary)
     
     state = {"symbol": "AAPL", "correlation_id": "test-id"}

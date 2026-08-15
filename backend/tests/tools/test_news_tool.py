@@ -43,7 +43,7 @@ async def test_get_headlines_gnews_fallback():
     tool.gnews_api_key = "mock_gnews_key"
     
     with responses.RequestsMock() as rsps:
-        # NewsAPI returns rate limit error (429)
+        # NewsAPI returns rate limit error (429) 
         rsps.add(
             responses.GET,
             "https://newsapi.org/v2/everything",

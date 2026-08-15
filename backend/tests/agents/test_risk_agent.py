@@ -11,7 +11,7 @@ def test_calculate_historical_volatility():
     ohlc_flat = [{"close": 100.0} for _ in range(35)]
     assert calculate_historical_volatility(ohlc_flat) == 0.0
     
-    # Alternating prices (simulating daily returns)
+    # Alternating prices (simulating daily returns) 
     ohlc_alternating = []
     # Log returns: alternate between math.log(1.02) and math.log(0.98)
     curr = 100.0

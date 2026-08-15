@@ -15,7 +15,7 @@ def test_calculate_indicators():
     # SMA20: average of closes [41, 42, ..., 60]
     # Sum: 41 + ... + 60 = 1010. Average: 1010/20 = 50.5
     assert indicators["sma20"] == 50.5
-    
+     
     # SMA50: average of closes [11, 12, ..., 60]
     # Sum: 11 + ... + 60 = 1775. Average: 1775/50 = 35.5
     assert indicators["sma50"] == 35.5

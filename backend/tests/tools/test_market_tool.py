@@ -17,7 +17,7 @@ async def test_get_price_success(mocker):
     price = await tool.get_price("AAPL")
     assert price == 150.0
     mock_yf.assert_called_once_with("AAPL")
-
+ 
 
 @pytest.mark.asyncio
 async def test_get_price_fallback_to_history(mocker):

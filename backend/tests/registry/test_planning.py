@@ -7,7 +7,7 @@ from app.registry.planning import PlanningModule, ExecutionPlan
 async def test_create_plan_selects_all_agents(mocker):
     planning_module = PlanningModule()
     
-    # Set up the expected plan mock output
+    # Set up the expected plan mock output 
     mock_plan = ExecutionPlan(
         query="Analyze Gold for tomorrow",
         selected_agents=["market_agent", "news_agent", "risk_agent"],

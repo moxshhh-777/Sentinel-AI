@@ -49,7 +49,7 @@ def calculate_indicators(ohlc: List[Dict[str, Any]]) -> Dict[str, float]:
             rs = avg_gain / avg_loss
             rsi14 = 100.0 - (100.0 / (1.0 + rs))
 
-        # Wilder's smoothing for subsequent periods
+        # Wilder's smoothing for subsequent periods  
         for i in range(14, len(deltas)):
             avg_gain = (avg_gain * 13 + gains[i]) / 14.0
             avg_loss = (avg_loss * 13 + losses[i]) / 14.0

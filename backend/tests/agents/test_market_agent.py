@@ -22,7 +22,7 @@ def test_calculate_indicators():
     
     # RSI14 should be returned as float
     assert isinstance(indicators["rsi14"], float)
-
+  
 
 @pytest.mark.asyncio
 async def test_market_agent_happy_path(mocker):

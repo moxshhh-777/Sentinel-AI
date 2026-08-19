@@ -23,7 +23,7 @@ async def test_news_agent_happy_path(mocker):
     
     mocker.patch("app.tools.news_tool.NewsTool.get_headlines", new_callable=AsyncMock, return_value=headlines_mock)
     
-    # Mock LLM Client
+    # Mock LLM Client 
     mock_summary = NewsSummary(
         headline_count=1,
         key_events=["Strong earnings drove stock surge."],

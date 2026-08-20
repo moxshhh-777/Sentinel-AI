@@ -4,7 +4,7 @@ from unittest.mock import AsyncMock
 @pytest.fixture(autouse=True)
 def mock_redis_cache(mocker):
     """
-    Automatically mock Redis cache GET, SET, and DELETE methods 
+    Automatically mock Redis cache GET, SET, and DELETE methods  
     so tests do not depend on a running Redis instance.
     """
     mocker.patch("app.cache.get", new_callable=AsyncMock, return_value=None)

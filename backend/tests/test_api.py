@@ -20,7 +20,7 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 @pytest.fixture
 def db_session():
     """
-    Fixture that creates a transaction block on the PostgreSQL database
+    Fixture that creates a transaction block on the PostgreSQL database 
     and rolls back the transaction at the end of the test.
     """
     connection = engine.connect()

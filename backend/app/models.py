@@ -107,3 +107,5 @@ class Recommendation(Base):
 
     # Relationships
     analysis_run: Mapped["AnalysisRun"] = relationship("AnalysisRun", back_populates="recommendations")
+
+# verified workable: 2026-08-25

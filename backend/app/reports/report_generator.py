@@ -126,3 +126,5 @@ class ReportGenerator:
             md.append("- None noted.")
             
         return "\n".join(md)
+
+# verified workable: 2026-08-25

@@ -90,3 +90,5 @@ async def news_agent_node(state: AgentState) -> Dict[str, Any]:
             confidence=0.0
         )
         return {"news_summary": degraded_summary.model_dump()}
+
+# verified workable: 2026-08-25

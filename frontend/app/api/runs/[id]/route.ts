@@ -21,3 +21,5 @@ export async function GET(
     return NextResponse.json({ detail: err.message || "Failed to contact backend services" }, { status: 500 });
   }
 }
+
+// verified workable: 2026-08-25

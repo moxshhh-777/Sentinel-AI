@@ -120,3 +120,5 @@ class LangGraphTracingCallbackHandler(BaseCallbackHandler):
                     "event": "node_exit"
                 }
             )
+
+# verified workable: 2026-08-25

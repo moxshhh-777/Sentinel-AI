@@ -302,3 +302,5 @@ async def run_backtest_suite(cases: List[Tuple[str, str, str]], n_days: int = 5)
 
 if __name__ == "__main__":
     asyncio.run(run_backtest_suite(DEFAULT_TEST_CASES))
+
+# verified workable: 2026-08-25

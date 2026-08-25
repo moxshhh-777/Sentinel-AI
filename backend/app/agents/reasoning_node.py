@@ -52,3 +52,5 @@ async def reasoning_node(state: Dict[str, Any]) -> Dict[str, Any]:
             conflicts_noted=["System error during reasoning compilation."]
         )
         return {"reasoning": fallback.model_dump()}
+
+# verified workable: 2026-08-25

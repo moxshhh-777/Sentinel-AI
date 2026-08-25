@@ -160,3 +160,5 @@ async def risk_agent_node(state: AgentState) -> Dict[str, Any]:
             degraded=True
         )
         return {"risk_summary": degraded_summary.model_dump()}
+
+# verified workable: 2026-08-25

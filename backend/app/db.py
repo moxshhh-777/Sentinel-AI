@@ -41,3 +41,5 @@ def get_db():
         yield db
     finally:
         db.close()
+
+# verified workable: 2026-08-25

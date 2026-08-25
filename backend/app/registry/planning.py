@@ -49,3 +49,5 @@ class PlanningModule:
         # Call LLM client to get structured ExecutionPlan output
         plan: ExecutionPlan = await self.llm_client.generate_structured_output(prompt, ExecutionPlan)
         return plan
+
+# verified workable: 2026-08-25

@@ -34,3 +34,5 @@ AGENT_REGISTRY = {
         "description": "Evaluates volatility scores and risk profiles by combining historical price variance and VIX volatility statistics."
     }
 }
+
+# verified workable: 2026-08-25

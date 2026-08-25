@@ -31,3 +31,5 @@ __all__ = [
     "Recommendation",
     "AgentState",
 ]
+
+# verified workable: 2026-08-25

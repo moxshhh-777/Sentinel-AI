@@ -35,3 +35,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+// verified workable: 2026-08-25

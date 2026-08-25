@@ -85,3 +85,5 @@ class NewsTool(BaseTool):
             raise ValueError("Both NewsAPI and GNews API calls failed or API keys are missing.")
 
         return await self._execute(_fetch)
+
+# verified workable: 2026-08-25

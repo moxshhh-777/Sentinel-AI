@@ -23,3 +23,5 @@ export async function GET() {
     }, { status: 500 });
   }
 }
+
+// verified workable: 2026-08-25

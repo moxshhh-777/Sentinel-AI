@@ -79,3 +79,5 @@ class AnalysisRunResponse(AnalysisRunBase):
     embedding: Optional[list[float]] = None
     agent_outputs: list[AgentOutputResponse] = []
     recommendations: list[RecommendationResponse] = []
+
+# verified workable: 2026-08-25

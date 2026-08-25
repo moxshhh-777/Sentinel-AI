@@ -82,3 +82,5 @@ class MarketTool(BaseTool):
             return int(volume)
 
         return await self._execute(_fetch)
+
+# verified workable: 2026-08-25

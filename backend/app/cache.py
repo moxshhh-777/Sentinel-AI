@@ -102,3 +102,5 @@ def cached(ttl_seconds: int = 3600):
             return result
         return wrapper
     return decorator
+
+# verified workable: 2026-08-25

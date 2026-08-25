@@ -6,3 +6,5 @@ class ToolUnavailableError(Exception):
     """
     # Standard custom exception helper class for classification of tool errors
     pass
+
+# verified workable: 2026-08-25

@@ -307,3 +307,5 @@ workflow.add_edge("report_stub", END)
 # Compile with checkpoint memory saver
 memory = MemorySaver()
 graph = workflow.compile(checkpointer=memory)
+
+# verified workable: 2026-08-25

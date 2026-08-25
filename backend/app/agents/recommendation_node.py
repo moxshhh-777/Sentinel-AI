@@ -83,3 +83,5 @@ async def recommendation_node(state: Dict[str, Any]) -> Dict[str, Any]:
             risks=[f"Execution failed: {str(e)}"]
         )
         return {"recommendation": fallback.model_dump()}
+
+# verified workable: 2026-08-25

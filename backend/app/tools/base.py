@@ -50,3 +50,5 @@ class BaseTool:
             if isinstance(e, ToolUnavailableError):
                 raise
             raise ToolUnavailableError(f"Tool '{self.circuit_breaker.name}' failed after retries: {e}") from e
+
+# verified workable: 2026-08-25

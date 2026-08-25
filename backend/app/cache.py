@@ -8,7 +8,7 @@ from redis.asyncio import Redis
 from dotenv import load_dotenv
 
 # Load environment variables
-load_dotenv()
+load_dotenv() 
 
 from app.logging_config import get_logger
 

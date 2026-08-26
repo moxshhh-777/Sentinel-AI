@@ -145,6 +145,7 @@ class HistoricalMockContext:
             p.start()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        # Clean up and stop all applied mock patches to restore original tool functionality
         for p in self.patches:
             p.stop()
 

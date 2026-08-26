@@ -52,7 +52,7 @@ class NewsTool(BaseTool):
                             "articles": articles
                         }
                 except Exception:
-                    # Ignore and fall through to GNews fallback
+                    # Ignore exceptions and fall through to GNews fallback to guarantee service availability
                     pass
 
             # 2. Fallback to GNews search API

@@ -56,6 +56,7 @@ class ReportGenerator:
         """
         data = ReportGenerator.to_json(state)
         
+        # Initialize markdown segments structure with clear document headers
         md = []
         md.append(f"# Sentinel AI Analysis Report")
         md.append(f"**Query**: {data['query']}")

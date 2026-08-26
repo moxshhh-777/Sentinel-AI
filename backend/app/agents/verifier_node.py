@@ -40,6 +40,7 @@ async def verifier_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
     client = GeminiClient()
     try:
+        # Request structured VerificationResult validation from the LLM client
         result: VerificationResult = await client.generate_structured_output(prompt, VerificationResult)
         logger.info(
             f"[{correlation_id}] Verifier node completed successfully. "

@@ -43,7 +43,7 @@ async def recommendation_node(state: Dict[str, Any]) -> Dict[str, Any]:
     baseline_confidence = sum(conf_scores) / len(conf_scores) if conf_scores else 0.8
     adjustment = float(verification.get("confidence_adjustment", 0.0))
     
-    # Calculate final adjusted confidence (clamped between 0.0 and 1.0)
+    # Calculate final adjusted confidence (clamped between 0.0 and 1.0 to enforce a standard probability scale)
     final_confidence = max(0.0, min(1.0, baseline_confidence + adjustment))
 
     prompt = (

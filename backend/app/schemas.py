@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Optional, Any
 from pydantic import BaseModel, Field, ConfigDict
 
-# Base schema config for ORM compatibility in Pydantic v2
+# Base schema config for ORM compatibility in Pydantic v2 - allows direct serialization of SQLAlchemy ORM objects
 class BaseSchema(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 

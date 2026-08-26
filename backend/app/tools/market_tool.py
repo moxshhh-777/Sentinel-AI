@@ -43,7 +43,7 @@ class MarketTool(BaseTool):
             
             # Reset index to promote Date/Datetime to a column
             df_reset = df.reset_index()
-            # Normalize column names to lowercase
+            # Normalize column names to lowercase to prevent attribute lookup mapping discrepancies in different datasets
             df_reset.columns = [str(col).lower() for col in df_reset.columns]
 
             # Rename default index column to 'date' or 'datetime'

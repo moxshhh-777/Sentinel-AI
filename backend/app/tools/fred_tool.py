@@ -31,7 +31,7 @@ class FredTool(BaseTool):
             params = {
                 "series_id": series_id,
                 "api_key": self.api_key,
-                "file_type": "json"
+                "file_type": "json"  # enforces standard JSON response format compatibility
             }
             response = requests.get(url, params=params, timeout=10)
             response.raise_for_status()
